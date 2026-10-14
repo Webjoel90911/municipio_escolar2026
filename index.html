@@ -1,509 +1,229 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Municipio Escolar 2026 - Buzón Cortesino</title>
-    <!-- FontAwesome & Google Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --green-box: #064e3b; /* Verde institucional para los subcuadros */
-            --green-dark: #022c22;
-            --green-accent: #15803d;
-            --text-muted-green: #a7f3d0;
-            --border-color: rgba(255, 255, 255, 0.15);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buzón Cortesino - Municipio Escolar 2026</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --verde-institucional: #0A5C36;
+      --verde-claro: #148248;
+      --aurora-top: #022013;
+      --aurora-mid: #09472A;
+      --aurora-bot: #02180D;
+      --blanco: #FFFFFF;
+      --gris-claro: #F4F6F5;
+      --texto-oscuro: #222222;
+      --sombra: rgba(0, 0, 0, 0.2);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-        /* FONDO GENERAL EN AURORA VERDE */
-        body {
-            background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #0f172a 100%);
-            color: #0f172a;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 12px;
-            overflow-x: hidden;
-        }
+    body {
+      background: linear-gradient(135deg, var(--aurora-top), var(--aurora-mid), var(--aurora-bot));
+      background-size: 400% 400%;
+      animation: auroraGlow 15s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      color: var(--texto-oscuro);
+    }
 
-        /* CUADRO PRINCIPAL GRANDE EN BLANCO */
-        .main-card {
-            background: #ffffff;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 480px; /* Tamaño optimizado para móviles Android */
-            padding: 24px 18px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            color: #0f172a;
-        }
+    @keyframes auroraGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        .header-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    .container {
+      background-color: var(--blanco);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px var(--sombra);
+      width: 100%;
+      max-width: 650px;
+      padding: 25px;
+    }
 
-        .school-logo {
-            width: 75px;
-            height: auto;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.15));
-        }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        .header-title h1 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: #064e3b; /* Texto verde sobre fondo blanco */
-        }
+    .logo {
+      width: 90px;
+      height: auto;
+      margin-bottom: 10px;
+    }
 
-        .header-title .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            color: #166534;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            margin-top: 6px;
-        }
+    .header h1 {
+      color: var(--verde-institucional);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
 
-        .step-view {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
+    .header h2 {
+      color: #555;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
 
-        .step-view.active {
-            display: block;
-        }
+    /* Grilla de Instrucciones 2x2 */
+    .instructions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .instruction-card {
+      background-color: var(--verde-institucional);
+      color: var(--blanco);
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        /* GRILLA 2x2 FIJA PARA MÓVILES (1 al costado de 2 / 3 al costado de 4) */
-        .instructions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+    .form-group {
+      margin-bottom: 18px;
+    }
 
-        /* SUBCUADROS EN VERDE INSTITUCIONAL */
-        .instruction-card {
-            background: var(--green-box);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--verde-institucional);
+    }
 
-        .instruction-card .step-num {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-            background: #22c55e;
-            color: #022c22;
-            font-weight: 800;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 0.8rem;
-            margin-bottom: 6px;
-        }
+    .form-control, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+    }
 
-        .instruction-card h4 {
-            font-size: 0.85rem;
-            color: #ffffff;
-            margin-bottom: 4px;
-            font-weight: 700;
-        }
+    .form-control:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--verde-institucional);
+    }
 
-        .instruction-card p {
-            font-size: 0.74rem;
-            color: var(--text-muted-green);
-            line-height: 1.35;
-        }
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 5px;
+    }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
 
-        .form-label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: #064e3b;
-        }
+    .radio-option input {
+      accent-color: var(--verde-institucional);
+    }
 
-        .category-selector {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
+    #name-field-container {
+      display: none;
+      margin-top: 10px;
+    }
 
-        .cat-btn {
-            flex: 1;
-            padding: 10px 4px;
-            background: var(--green-box);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: var(--text-muted-green);
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-        }
+    .btn-submit {
+      width: 100%;
+      background-color: var(--verde-institucional);
+      color: var(--blanco);
+      border: none;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.1s;
+    }
 
-        .cat-btn.active {
-            background: #15803d;
-            border-color: #22c55e;
-            color: #ffffff;
-        }
+    .btn-submit:hover {
+      background-color: var(--verde-claro);
+    }
 
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            background: var(--green-box);
-            border-radius: 10px;
-            padding: 4px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 16px;
-        }
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
 
-        .toggle-btn {
-            flex: 1;
-            padding: 8px;
-            text-align: center;
-            border: none;
-            background: transparent;
-            color: var(--text-muted-green);
-            font-weight: 600;
-            font-size: 0.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+    .status-msg {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: none;
+    }
 
-        .toggle-btn.active {
-            background: #22c55e;
-            color: #022c22;
-            font-weight: 800;
-        }
+    .status-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
 
-        .custom-input, .custom-textarea {
-            width: 100%;
-            background: var(--green-box);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
-            color: white;
-            font-size: 0.9rem;
-        }
+    .status-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
 
-        .custom-input:focus, .custom-textarea:focus {
-            outline: none;
-            border-color: #22c55e;
-        }
-
-        .custom-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .file-upload-box {
-            border: 2px dashed #064e3b;
-            border-radius: 10px;
-            padding: 14px;
-            text-align: center;
-            background: #f0fdf4;
-            cursor: pointer;
-        }
-
-        .file-upload-box i {
-            font-size: 1.4rem;
-            color: #15803d;
-            margin-bottom: 4px;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background: #15803d;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(21, 128, 61, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-            margin-top: 8px;
-        }
-
-        .footer-admin-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .footer-admin-link a {
-            color: #64748b;
-            font-size: 0.8rem;
-            text-decoration: none;
-        }
-        .footer-admin-link a:hover {
-            color: #064e3b;
-        }
-    </style>
+    @media (max-width: 480px) {
+      .instructions-grid {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="main-card">
-        <div class="header-title">
-            <img src="OIP.webp" alt="Insignia IE Tte Miguel Cortés" class="school-logo">
-            <h1>Municipio Escolar 2026</h1>
-            <span class="badge"><i class="fa-solid fa-box-archive"></i> Buzón Cortesino</span>
-        </div>
-
-        <!-- VISTA 1: INSTRUCCIONES FORMALES EN MÓVIL (Subcuadros en Verde) -->
-        <div id="view-instructions" class="step-view active">
-            <div class="instructions-grid">
-                <!-- 1 -->
-                <div class="instruction-card">
-                    <span class="step-num">1</span>
-                    <h4>Categoría</h4>
-                    <p>Elige si es Queja, Sugerencia o Reclamo.</p>
-                </div>
-                <!-- 2 -->
-                <div class="instruction-card">
-                    <span class="step-num">2</span>
-                    <h4>Privacidad</h4>
-                    <p>Usa modo Anónimo o coloca tu Nombre.</p>
-                </div>
-                <!-- 3 -->
-                <div class="instruction-card">
-                    <span class="step-num">3</span>
-                    <h4>Mensaje</h4>
-                    <p>Explica detalladamente tu caso o propuesta.</p>
-                </div>
-                <!-- 4 -->
-                <div class="instruction-card">
-                    <span class="step-num">4</span>
-                    <h4>Evidencias</h4>
-                    <p>Adjunta fotos o archivos opcionales.</p>
-                </div>
-            </div>
-
-            <button class="btn-primary" onclick="showForm()">
-                <span>Entrar al Buzón</span>
-                <i class="fa-solid fa-arrow-right"></i>
-            </button>
-
-            <div class="footer-admin-link">
-                <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Acceso Administrador</a>
-            </div>
-        </div>
-
-        <!-- VISTA 2: FORMULARIO DE ENVÍO -->
-        <div id="view-form" class="step-view">
-            <form id="buzonForm" onsubmit="enviarReporteEnLinea(event)">
-                
-                <div class="form-group">
-                    <label class="form-label">Tipo de Reporte</label>
-                    <div class="category-selector">
-                        <button type="button" class="cat-btn active" id="catQueja" onclick="setCategory('Queja')"><i class="fa-solid fa-circle-exclamation"></i> Queja</button>
-                        <button type="button" class="cat-btn" id="catSugerencia" onclick="setCategory('Sugerencia')"><i class="fa-solid fa-lightbulb"></i> Sugerencia</button>
-                        <button type="button" class="cat-btn" id="catReclamo" onclick="setCategory('Reclamo')"><i class="fa-solid fa-triangle-exclamation"></i> Reclamo</button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Modalidad del Envío</label>
-                    <div class="toggle-container">
-                        <button type="button" class="toggle-btn active" id="btnAnonimo" onclick="setIdentity('Anónimo')">
-                            <i class="fa-solid fa-user-secret"></i> Anónimo
-                        </button>
-                        <button type="button" class="toggle-btn" id="btnNombre" onclick="setIdentity('Nombre Propio')">
-                            <i class="fa-solid fa-user"></i> Con Nombre
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group" id="nameInputContainer" style="display: none;">
-                    <label class="form-label" for="user_name">Nombre completo y grado</label>
-                    <input type="text" id="user_name" class="custom-input" placeholder="Ej: Carlos Mendoza - 5to B">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="mensaje">Redacción del reporte</label>
-                    <textarea id="mensaje" class="custom-textarea" placeholder="Escribe los detalles de tu caso..." required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Evidencia (Opcional)</label>
-                    <div class="file-upload-box" onclick="document.getElementById('evidence_file').click()">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <p id="file-label-text" style="font-size: 0.8rem; color: #166534;">Adjuntar foto o documento</p>
-                        <input type="file" id="evidence_file" style="display: none;" onchange="updateFileName(this)" accept="image/*,.pdf,.doc,.docx">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-primary" id="btnSubmit">
-                    <span>Enviar Registro</span>
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-                <button type="button" class="btn-primary btn-secondary" onclick="showInstructions()">
-                    Volver
-                </button>
-            </form>
-        </div>
+  <div class="container">
+    <div class="header">
+      <img src="OIP.webp" alt="Logotipo Institucional" class="logo" onerror="this.style.display='none'">
+      <h1>Buzón Cortesino</h1>
+      <h2>I.E. Tte. Miguel Cortés del Castillo - Municipio Escolar 2026</h2>
     </div>
 
-    <!-- SDK de Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- Instrucciones en Grilla 2x2 -->
+    <div class="instructions-grid">
+      <div class="instruction-card">1. Tu voz cuenta: Exprésate libremente</div>
+      <div class="instruction-card">2. Opción Anónima o Identificada</div>
+      <div class="instruction-card">3. Reportes revisados con total confidencialidad</div>
+      <div class="instruction-card">4. Construyamos juntos un mejor colegio</div>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_PROJECT_ID.firebaseapp.com",
-            projectId: "TU_PROJECT_ID",
-            storageBucket: "TU_PROJECT_ID.appspot.com",
-            messagingSenderId: "TU_SENDER_ID",
-            appId: "TU_APP_ID"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        let categoriaSeleccionada = "Queja";
-        let modalidadActual = "Anónimo";
-
-        window.setCategory = function(cat) {
-            categoriaSeleccionada = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            if(cat === 'Queja') document.getElementById('catQueja').classList.add('active');
-            if(cat === 'Sugerencia') document.getElementById('catSugerencia').classList.add('active');
-            if(cat === 'Reclamo') document.getElementById('catReclamo').classList.add('active');
-        }
-
-        window.setIdentity = function(type) {
-            modalidadActual = type;
-            const btnAnon = document.getElementById('btnAnonimo');
-            const btnNomb = document.getElementById('btnNombre');
-            const container = document.getElementById('nameInputContainer');
-            
-            if (type === 'Anónimo') {
-                btnAnon.classList.add('active');
-                btnNomb.classList.remove('active');
-                container.style.display = 'none';
-                document.getElementById('user_name').required = false;
-            } else {
-                btnNomb.classList.add('active');
-                btnAnon.classList.remove('active');
-                container.style.display = 'block';
-                document.getElementById('user_name').required = true;
-            }
-        }
-
-        window.showForm = function() {
-            document.getElementById('view-instructions').classList.remove('active');
-            document.getElementById('view-form').classList.add('active');
-        }
-
-        window.showInstructions = function() {
-            document.getElementById('view-form').classList.remove('active');
-            document.getElementById('view-instructions').classList.add('active');
-        }
-
-        window.updateFileName = function(input) {
-            const label = document.getElementById('file-label-text');
-            if (input.files && input.files[0]) {
-                label.innerText = `Adjuntado: ${input.files[0].name}`;
-            } else {
-                label.innerText = "Adjuntar foto o documento";
-            }
-        }
-
-        window.enviarReporteEnLinea = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSubmit');
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Enviando...`;
-
-            const nombreInput = document.getElementById('user_name').value;
-            const mensaje = document.getElementById('mensaje').value;
-            const archivoInput = document.getElementById('evidence_file');
-            
-            let autorFinal = (modalidadActual === 'Anónimo') ? 'Anónimo' : (nombreInput || 'Anónimo');
-            let nombreArchivo = archivoInput.files[0] ? archivoInput.files[0].name : 'Sin archivo adjunto';
-
-            try {
-                let archivoBase64 = null;
-                if (archivoInput.files[0]) {
-                    archivoBase64 = await toBase64(archivoInput.files[0]);
-                }
-
-                await addDoc(collection(db, "reportes_buzon"), {
-                    categoria: categoriaSeleccionada,
-                    autor: autorFinal,
-                    mensaje: mensaje,
-                    nombreArchivo: nombreArchivo,
-                    archivoData: archivoBase64,
-                    fecha: new Date().toLocaleString(),
-                    timestamp: serverTimestamp()
-                });
-
-                alert("¡Tu reporte ha sido registrado exitosamente!");
-                document.getElementById('buzonForm').reset();
-                setIdentity('Anónimo');
-                setCategory('Queja');
-                showInstructions();
-            } catch (error) {
-                console.error("Error al enviar:", error);
-                alert("Hubo un error al enviar el reporte.");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<span>Enviar Registro</span> <i class="fa-solid fa-paper-plane"></i>`;
-            }
-        }
-
-        const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    </script>
-</body>
-</html>
+    <form id="report-form">
+      <div class="form-group">
+        <label>Modalidad de Envío:</label>
+        <div class="radio-group">
 

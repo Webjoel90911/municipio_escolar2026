@@ -1,424 +1,336 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Panel de Administración - Municipio Escolar 2026</title>
-    <!-- FontAwesome & Google Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --green-box: #064e3b;
-            --green-dark: #022c22;
-            --green-accent: #15803d;
-            --danger: #dc2626;
-            --text-muted-green: #a7f3d0;
-            --border-color: rgba(255, 255, 255, 0.15);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - Buzón Cortesino</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --verde-institucional: #0A5C36;
+      --verde-claro: #148248;
+      --aurora-top: #022013;
+      --aurora-mid: #09472A;
+      --aurora-bot: #02180D;
+      --blanco: #FFFFFF;
+      --texto-oscuro: #222222;
+      --sombra: rgba(0, 0, 0, 0.2);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-        /* FONDO EN AURORA VERDE */
-        body {
-            background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #0f172a 100%);
-            color: #0f172a;
-            min-height: 100vh;
-            padding: 14px 10px;
-        }
+    body {
+      background: linear-gradient(135deg, var(--aurora-top), var(--aurora-mid), var(--aurora-bot));
+      background-size: 400% 400%;
+      animation: auroraGlow 15s ease infinite;
+      min-height: 100vh;
+      padding: 15px;
+      color: var(--texto-oscuro);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    @keyframes auroraGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        /* Login Card */
-        .login-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 28px 18px;
-            max-width: 380px;
-            margin: 50px auto;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            color: #064e3b;
-        }
+    .container {
+      background-color: var(--blanco);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px var(--sombra);
+      width: 100%;
+      max-width: 900px;
+      padding: 25px;
+      margin-top: 20px;
+    }
 
-        .school-logo-admin {
-            width: 75px;
-            height: auto;
-            margin-bottom: 12px;
-        }
+    /* Pantalla de Login */
+    #login-screen {
+      text-align: center;
+      max-width: 400px;
+      margin: 40px auto;
+    }
 
-        .login-card h2 {
-            font-size: 1.3rem;
-            margin-bottom: 18px;
-        }
+    #login-screen h2 {
+      color: var(--verde-institucional);
+      margin-bottom: 20px;
+    }
 
-        .custom-input {
-            width: 100%;
-            padding: 12px;
-            background: var(--green-box);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: white;
-            margin-bottom: 18px;
-            font-size: 0.95rem;
-        }
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
 
-        .btn-admin {
-            padding: 10px 14px;
-            background: var(--green-accent);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
+    .btn-primary {
+      width: 100%;
+      background-color: var(--verde-institucional);
+      color: var(--blanco);
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-        .btn-danger {
-            background: var(--danger);
-        }
+    .btn-primary:hover {
+      background-color: var(--verde-claro);
+    }
 
-        #dashboard {
-            display: none;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
+    /* Panel de Control */
+    #admin-panel {
+      display: none;
+    }
 
-        /* HEADER VERDE CON BOTONES UNO AL LADO DEL OTRO */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--green-box);
-            color: white;
-            padding: 16px;
-            border-radius: 14px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+    .header-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--verde-institucional);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-        .header-title-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .header-panel h2 {
+      color: var(--verde-institucional);
+      font-size: 1.3rem;
+    }
 
-        .header-title-box img {
-            width: 42px;
-            height: auto;
-        }
+    .btn-logout {
+      background-color: #dc3545;
+      color: var(--blanco);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .filters-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
 
-        /* TOOLBAR Y BUSCADOR */
-        .toolbar {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
+    .filters-bar input, .filters-bar select {
+      flex: 1;
+      min-width: 150px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
 
-        .search-box {
-            position: relative;
-            width: 100%;
-        }
+    .reports-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        .search-box i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted-green);
-        }
+    .card-report {
+      background-color: #f8f9fa;
+      border-left: 5px solid var(--verde-institucional);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
 
-        .search-input {
-            width: 100%;
-            padding: 10px 14px 10px 40px;
-            background: var(--green-box);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: white;
-            font-size: 0.9rem;
-        }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      color: #666;
+    }
 
-        .filter-group {
-            display: flex;
-            gap: 4px;
-            background: var(--green-box);
-            padding: 4px;
-            border-radius: 10px;
-        }
+    .badge {
+      background-color: var(--verde-institucional);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
 
-        .filter-btn {
-            flex: 1;
-            padding: 8px 6px;
-            background: transparent;
-            border: none;
-            color: var(--text-muted-green);
-            border-radius: 8px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
+    .card-body {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #333;
+    }
 
-        .filter-btn.active {
-            background: #22c55e;
-            color: #022c22;
-            font-weight: 800;
-        }
+    .card-footer {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--verde-institucional);
+    }
 
-        .complaint-item {
-            background: var(--green-box);
-            color: white;
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .complaint-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.78rem;
-            color: var(--text-muted-green);
-        }
-
-        .cat-badge {
-            padding: 3px 8px;
-            border-radius: 14px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .cat-Queja { background: rgba(220, 38, 38, 0.3); color: #fca5a5; border: 1px solid rgba(220, 38, 38, 0.5); }
-        .cat-Sugerencia { background: rgba(245, 158, 11, 0.3); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.5); }
-        .cat-Reclamo { background: rgba(34, 197, 94, 0.3); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.5); }
-
-        .author-tag {
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        .complaint-content {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 10px;
-            white-space: pre-wrap;
-            color: #f8fafc;
-        }
-
-        .file-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--green-dark);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            color: #f59e0b;
-            text-decoration: none;
-            border: 1px solid var(--border-color);
-        }
-    </style>
+    .error-msg {
+      color: #dc3545;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- LOGIN ADMIN -->
-        <div id="login-box" class="login-card">
-            <img src="OIP.webp" alt="Insignia" class="school-logo-admin">
-            <h2>Acceso Privado Admin</h2>
-            <input type="password" id="pass" class="custom-input" placeholder="Ingrese clave de acceso">
-            <button class="btn-admin" style="width: 100%; justify-content: center;" onclick="verificarLogin()">
-                <i class="fa-solid fa-key"></i> Ingresar al Panel
-            </button>
-            <div style="margin-top: 14px;">
-                <a href="index.html" style="color: #64748b; font-size: 0.8rem; text-decoration: none;">Volver al Buzón</a>
-            </div>
-        </div>
-
-        <!-- DASHBOARD ADMIN -->
-        <div id="dashboard">
-            <header>
-                <div class="header-title-box">
-                    <img src="OIP.webp" alt="Insignia IE Tte Miguel Cortés">
-                    <div>
-                        <h2 style="font-size: 1.1rem;">Panel Admin</h2>
-                        <span style="color: var(--text-muted-green); font-size: 0.75rem;">Municipio Escolar 2026</span>
-                    </div>
-                </div>
-
-                <div class="header-actions">
-                    <a href="index.html" class="btn-admin" style="background: var(--green-dark);">
-                        <i class="fa-solid fa-house"></i> Inicio
-                    </a>
-                    <button class="btn-admin btn-danger" onclick="limpiarRegistrosEnLinea()">
-                        <i class="fa-solid fa-trash-can"></i> Borrar
-                    </button>
-                </div>
-            </header>
-
-            <!-- BUSCADOR Y FILTROS -->
-            <div class="toolbar">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por palabra, alumno o fecha..." oninput="filtrarReportes()">
-                </div>
-
-                <div class="filter-group">
-                    <button class="filter-btn active" id="f-Todos" onclick="setFiltro('Todos')">Todos</button>
-                    <button class="filter-btn" id="f-Queja" onclick="setFiltro('Queja')">Quejas</button>
-                    <button class="filter-btn" id="f-Sugerencia" onclick="setFiltro('Sugerencia')">Sugerencias</button>
-                    <button class="filter-btn" id="f-Reclamo" onclick="setFiltro('Reclamo')">Reclamos</button>
-                </div>
-            </div>
-
-            <div id="reports-list">
-                <div style="text-align: center; color: #64748b; padding: 30px;">Cargando lista en línea...</div>
-            </div>
-        </div>
+  <div class="container">
+    <!-- Pantalla de Login -->
+    <div id="login-screen">
+      <h2>Acceso Administrativo</h2>
+      <input type="password" id="admin-pass" class="form-control" placeholder="Ingrese la contraseña">
+      <button class="btn-primary" id="login-btn">Ingresar</button>
+      <div id="login-error" class="error-msg">Contraseña incorrecta</div>
     </div>
 
-    <!-- SDK de Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, doc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- Panel Principal -->
+    <div id="admin-panel">
+      <div class="header-panel">
+        <h2>Panel de Control - Municipio Escolar</h2>
+        <button class="btn-logout" id="logout-btn">Cerrar Sesión</button>
+      </div>
 
-        const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_PROJECT_ID.firebaseapp.com",
-            projectId: "TU_PROJECT_ID",
-            storageBucket: "TU_PROJECT_ID.appspot.com",
-            messagingSenderId: "TU_SENDER_ID",
-            appId: "TU_APP_ID"
-        };
+      <div class="filters-bar">
+        <input type="text" id="search-input" placeholder="Buscar en mensajes o nombres...">
+        <select id="filter-type">
+          <option value="Todos">Todos los tipos</option>
+          <option value="Sugerencia">Sugerencias</option>
+          <option value="Queja">Quejas</option>
+          <option value="Reclamo">Reclamos</option>
+        </select>
+      </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+      <div id="reports-container" class="reports-list">
+        <!-- Se carga dinámicamente -->
+      </div>
+    </div>
+  </div>
 
-        const ADMIN_PASS = "cortesino2026";
-        let todosLosReportes = [];
-        let filtroCategoria = "Todos";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        window.verificarLogin = function() {
-            const input = document.getElementById('pass').value;
-            if (input === ADMIN_PASS) {
-                document.getElementById('login-box').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                escucharReportes();
-            } else {
-                alert('Contraseña incorrecta');
-            }
+    // Credenciales de Firebase actualizadas
+    const firebaseConfig = {
+      apiKey: "AIzaSyBx6WWDY7GXzYHiJKDXv_dnN7cAdFwdK34",
+      authDomain: "buzon-cortesino.firebaseapp.com",
+      projectId: "buzon-cortesino",
+      storageBucket: "buzon-cortesino.firebasestorage.app",
+      messagingSenderId: "501889093050",
+      appId: "1:501889093050:web:b15e1023241d4ad40e6183"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const PASS_CORRECTA = "cortesino2026";
+    let allReports = [];
+
+    const loginScreen = document.getElementById('login-screen');
+    const adminPanel = document.getElementById('admin-panel');
+    const passInput = document.getElementById('admin-pass');
+    const loginBtn = document.getElementById('login-btn');
+    const loginError = document.getElementById('login-error');
+    const logoutBtn = document.getElementById('logout-btn');
+    const searchInput = document.getElementById('search-input');
+    const filterType = document.getElementById('filter-type');
+    const reportsContainer = document.getElementById('reports-container');
+
+    loginBtn.addEventListener('click', attemptLogin);
+    passInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
+
+    function attemptLogin() {
+      if (passInput.value === PASS_CORRECTA) {
+        loginScreen.style.display = 'none';
+        adminPanel.style.display = 'block';
+        loginError.style.display = 'none';
+        listenToReports();
+      } else {
+        loginError.style.display = 'block';
+      }
+    }
+
+    logoutBtn.addEventListener('click', () => {
+      adminPanel.style.display = 'none';
+      loginScreen.style.display = 'block';
+      passInput.value = '';
+    });
+
+    function listenToReports() {
+      const q = query(collection(db, "reportes"), orderBy("fecha", "desc"));
+      onSnapshot(q, (snapshot) => {
+        allReports = [];
+        snapshot.forEach((doc) => {
+          allReports.push({ id: doc.id, ...doc.data() });
+        });
+        renderReports();
+      });
+    }
+
+    function renderReports() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedType = filterType.value;
+
+      const filtered = allReports.filter(r => {
+        const matchesSearch = (r.mensaje && r.mensaje.toLowerCase().includes(searchTerm)) ||
+                              (r.nombre && r.nombre.toLowerCase().includes(searchTerm));
+        const matchesType = selectedType === "Todos" || r.tipo === selectedType;
+        return matchesSearch && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        reportsContainer.innerHTML = '<p style="text-align:center; color:#666; padding: 20px;">No se encontraron reportes.</p>';
+        return;
+      }
+
+      reportsContainer.innerHTML = filtered.map(r => {
+        let fechaStr = "Reciente";
+        if (r.fecha && r.fecha.toDate) {
+          fechaStr = r.fecha.toDate().toLocaleString('es-PE');
         }
+        return `
+          <div class="card-report">
+            <div class="card-header">
+              <span><strong>De:</strong> ${escapeHtml(r.nombre)}</span>
+              <span>${fechaStr}</span>
+            </div>
+            <div class="card-body">
+              <p>${escapeHtml(r.mensaje)}</p>
+            </div>
+            <div class="card-footer">
+              <span class="badge">${escapeHtml(r.tipo)}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
-        function escucharReportes() {
-            const q = query(collection(db, "reportes_buzon"));
-            onSnapshot(q, (snapshot) => {
-                todosLosReportes = [];
-                snapshot.forEach((docSnap) => {
-                    todosLosReportes.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                
-                todosLosReportes.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-                filtrarReportes();
-            });
-        }
+    searchInput.addEventListener('input', renderReports);
+    filterType.addEventListener('change', renderReports);
 
-        window.setFiltro = function(cat) {
-            filtroCategoria = cat;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`f-${cat}`).classList.add('active');
-            filtrarReportes();
-        }
-
-        window.filtrarReportes = function() {
-            const list = document.getElementById('reports-list');
-            const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
-
-            let resultado = todosLosReportes.filter(item => {
-                const coincideCat = (filtroCategoria === 'Todos') || (item.categoria === filtroCategoria);
-                const coincideTexto = (item.mensaje || '').toLowerCase().includes(textoBusqueda) ||
-                                     (item.autor || '').toLowerCase().includes(textoBusqueda) ||
-                                     (item.fecha || '').toLowerCase().includes(textoBusqueda);
-                return coincideCat && coincideTexto;
-            });
-
-            if (resultado.length === 0) {
-                list.innerHTML = `<div style="text-align: center; color: #64748b; padding: 30px;">No se encontraron registros.</div>`;
-                return;
-            }
-
-            let html = '';
-            resultado.forEach(item => {
-                let archivoHTML = '<span style="font-size:0.85rem; color:#a7f3d0;">Sin archivo adjunto</span>';
-                if (item.archivoData && item.nombreArchivo !== 'Sin archivo adjunto') {
-                    archivoHTML = `<a href="${item.archivoData}" download="${item.nombreArchivo}" class="file-badge"><i class="fa-solid fa-download"></i> Descargar Evidencia: ${item.nombreArchivo}</a>`;
-                }
-
-                let catClass = item.categoria ? `cat-${item.categoria}` : 'cat-Queja';
-
-                html += `
-                    <div class="complaint-item">
-                        <div class="complaint-header">
-                            <div>
-                                <span class="cat-badge ${catClass}">${item.categoria || 'Queja'}</span>
-                                <span class="author-tag" style="margin-left: 8px;"><i class="fa-solid fa-user-circle"></i> ${escapeHtml(item.autor)}</span>
-                            </div>
-                            <span><i class="fa-regular fa-clock"></i> ${item.fecha || 'Fecha Reciente'}</span>
-                        </div>
-                        <div class="complaint-content">${escapeHtml(item.mensaje)}</div>
-                        <div>${archivoHTML}</div>
-                    </div>
-                `;
-            });
-            list.innerHTML = html;
-        }
-
-        window.limpiarRegistrosEnLinea = async function() {
-            if (confirm("¿Estás seguro de eliminar TODOS los registros de la base de datos en línea? Esta acción no se puede deshacer.")) {
-                try {
-                    const querySnapshot = await getDocs(collection(db, "reportes_buzon"));
-                    querySnapshot.forEach(async (docSnap) => {
-                        await deleteDoc(doc(db, "reportes_buzon", docSnap.id));
-                    });
-                    alert("Se han borrado todos los reportes correctamente.");
-                } catch (error) {
-                    console.error("Error borrando:", error);
-                    alert("Error al intentar borrar los registros.");
-                }
-            }
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-    </script>
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>
 
