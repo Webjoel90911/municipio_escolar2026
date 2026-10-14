@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Buzón Cortesino</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #38bdf8;
+        }
+        .btn {
+            padding: 10px 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        .btn-danger {
+            background: #dc2626;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        /* Login Card */
+        .login-card {
+            background: #1e293b;
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        .login-card h2 {
+            margin-bottom: 20px;
+            color: #38bdf8;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+        }
+        /* Complaint Card List */
+        .complaint-card {
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #334155;
+        }
+        .complaint-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+        }
+        .complaint-author {
+            font-weight: 600;
+            color: #38bdf8;
+        }
+        .complaint-body {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+        }
+        .complaint-file {
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        .complaint-file a {
+            color: #38bdf8;
+            text-decoration: underline;
+        }
+        .empty-msg {
+            text-align: center;
+            color: #64748b;
+            margin-top: 40px;
+            font-size: 1.1rem;
+        }
+        #admin-panel {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- PANTALLA DE ACCESO (CONTRASEÑA) -->
+        <div id="login-screen" class="login-card">
+            <h2>Acceso Administrador</h2>
+            <div class="form-group">
+                <label for="admin-pass">Contraseña:</label>
+                <input type="password" id="admin-pass" placeholder="Ingresa la clave">
+            </div>
+            <button class="btn" style="width: 100%;" onclick="checkPassword()">Ingresar</button>
+            <div style="margin-top: 15px;">
+                <a href="index.html" style="color: #94a3b8; font-size: 0.85rem; text-decoration: none;">Volver al Buzón</a>
+            </div>
+        </div>
+
+        <!-- PANEL DE GESTIÓN DE QUEJAS -->
+        <div id="admin-panel">
+            <header>
+                <div>
+                    <h1>Buzón Cortesino - Admin</h1>
+                    <p style="font-size: 0.85rem; color: #94a3b8;">Gestión de quejas y sugerencias</p>
+                </div>
+                <div>
+                    <a href="index.html" class="btn" style="background: #475569; margin-right: 8px;">Ir al Inicio</a>
+                    <button class="btn btn-danger" onclick="clearAll()">Borrar Todo</button>
+                </div>
+            </header>
+
+            <div id="complaints-container">
+                <!-- Aquí se cargan dinámicamente las quejas -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONTRASEÑA CONFIGURABLE (Puedes cambiar "cortesino2026" por la que prefieras)
+        const ADMIN_PASSWORD = "cortesino2026";
+
+        function checkPassword() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === ADMIN_PASSWORD) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadComplaints();
+            } else {
+                alert('Contraseña incorrecta.');
+            }
+        }
+
+        function loadComplaints() {
+            const container = document.getElementById('complaints-container');
+            const complaints = JSON.parse(localStorage.getItem('cortesino_complaints')) || [];
+
+            if (complaints.length === 0) {
+                container.innerHTML = '<div class="empty-msg">No hay quejas o sugerencias registradas todavía.</div>';
+                return;
+            }
+
+            let html = '';
+            // Ordenar de más reciente a más antiguo
+            complaints.reverse().forEach(item => {
+                let fileHTML = '<span>Sin archivo adjunto</span>';
+                if (item.fileData && item.fileName !== 'Sin archivo adjunto') {
+                    fileHTML = `<a href="${item.fileData}" download="${item.fileName}">📎 Descargar/Ver evidencia: ${item.fileName}</a>`;
+                }
+
+                html += `
+                    <div class="complaint-card">
+                        <div class="complaint-header">
+                            <span class="complaint-author">Remitente: ${escapeHtml(item.author)}</span>
+                            <span>📅 ${item.date}</span>
+                        </div>
+                        <div class="complaint-body">${escapeHtml(item.text)}</div>
+                        <div class="complaint-file">${fileHTML}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function clearAll() {
+            if (confirm('¿Estás seguro de eliminar todos los registros guardados? Esta acción no se puede deshacer.')) {
+                localStorage.removeItem('cortesino_complaints');
+                loadComplaints();
+            }
+        }
+
+        // Función de seguridad básica para evitar inyección HTML en las tarjetas
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
