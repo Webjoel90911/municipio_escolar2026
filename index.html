@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buzón Cortesino - Municipio Escolar 2026</title>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -226,4 +225,123 @@
       <div class="form-group">
         <label>Modalidad de Envío:</label>
         <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="anonimo" value="true" checked id="radio-anonimo"> Anónimo
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="anonimo" value="false" id="radio-nombre"> Con Nombre
+          </label>
+        </div>
+      </div>
 
+      <div class="form-group" id="name-field-container">
+        <label for="nombre_estudiante">Nombre Completo y Grado/Sección:</label>
+        <input type="text" id="nombre_estudiante" class="form-control" placeholder="Ej: Juan Pérez - 4to B">
+      </div>
+
+      <div class="form-group">
+        <label for="tipo_reporte">Tipo de Mensaje:</label>
+        <select id="tipo_reporte" required>
+          <option value="" disabled selected>Selecciona una opción...</option>
+          <option value="Sugerencia">Sugerencia</option>
+          <option value="Queja">Queja</option>
+          <option value="Reclamo">Reclamo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="mensaje">Detalle de tu Sugerencia, Queja o Reclamo:</label>
+        <textarea id="mensaje" rows="5" required placeholder="Escribe aquí tu mensaje de forma respetuosa y detallada..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submit-btn">Enviar Mensaje</button>
+    </form>
+
+    <div id="status-message" class="status-msg"></div>
+  </div>
+
+  <!-- Firebase SDK modular desde CDN -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Credenciales de Firebase actualizadas
+    const firebaseConfig = {
+      apiKey: "AIzaSyBx6WWDY7GXzYHiJKDXv_dnN7cAdFwdK34",
+      authDomain: "buzon-cortesino.firebaseapp.com",
+      projectId: "buzon-cortesino",
+      storageBucket: "buzon-cortesino.firebasestorage.app",
+      messagingSenderId: "501889093050",
+      appId: "1:501889093050:web:b15e1023241d4ad40e6183"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Lógica del Formulario
+    const radioAnonimo = document.getElementById('radio-anonimo');
+    const radioNombre = document.getElementById('radio-nombre');
+    const nameContainer = document.getElementById('name-field-container');
+    const nameInput = document.getElementById('nombre_estudiante');
+    const form = document.getElementById('report-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const statusMsg = document.getElementById('status-message');
+
+    radioAnonimo.addEventListener('change', () => {
+      nameContainer.style.display = 'none';
+      nameInput.value = '';
+    });
+
+    radioNombre.addEventListener('change', () => {
+      nameContainer.style.display = 'block';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const esAnonimo = radioAnonimo.checked;
+      const nombre = esAnonimo ? "Anónimo" : nameInput.value.trim();
+      const tipo = document.getElementById('tipo_reporte').value;
+      const mensaje = document.getElementById('mensaje').value.trim();
+
+      if (!esAnonimo && !nombre) {
+        showStatus('Por favor, ingresa tu nombre y grado/sección.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Enviando...';
+
+      try {
+        await addDoc(collection(db, "reportes"), {
+          nombre: nombre,
+          esAnonimo: esAnonimo,
+          tipo: tipo,
+          mensaje: mensaje,
+          fecha: serverTimestamp(),
+          estado: 'Pendiente'
+        });
+
+        showStatus('¡Tu mensaje ha sido enviado con éxito al Municipio Escolar!', 'success');
+        form.reset();
+        nameContainer.style.display = 'none';
+      } catch (error) {
+        console.error("Error al enviar el reporte: ", error);
+        showStatus('Ocurrió un error al enviar tu mensaje. Inténtalo de nuevo.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Enviar Mensaje';
+      }
+    });
+
+    function showStatus(message, type) {
+      statusMsg.className = `status-msg ${type === 'success' ? 'status-success' : 'status-error'}`;
+      statusMsg.innerText = message;
+      statusMsg.style.display = 'block';
+      setTimeout(() => {
+        statusMsg.style.display = 'none';
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
