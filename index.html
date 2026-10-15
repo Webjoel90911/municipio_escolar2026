@@ -80,7 +80,6 @@
       margin-top: 4px;
     }
 
-    /* Grilla de Instrucciones 2x2 */
     .instructions-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -213,7 +212,6 @@
       <h2>I.E. Tte. Miguel Cortés del Castillo - Municipio Escolar 2026</h2>
     </div>
 
-    <!-- Instrucciones en Grilla 2x2 -->
     <div class="instructions-grid">
       <div class="instruction-card">1. Tu voz cuenta: Exprésate libremente</div>
       <div class="instruction-card">2. Opción Anónima o Identificada</div>
@@ -251,7 +249,12 @@
 
       <div class="form-group">
         <label for="mensaje">Detalle de tu Sugerencia, Queja o Reclamo:</label>
-        <textarea id="mensaje" rows="5" required placeholder="Escribe aquí tu mensaje de forma respetuosa y detallada..."></textarea>
+        <textarea id="mensaje" rows="4" required placeholder="Escribe aquí tu mensaje de forma respetuosa y detallada..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="evidencia_link">Enlace a Evidencia / Foto / Video (Opcional):</label>
+        <input type="url" id="evidencia_link" class="form-control" placeholder="Ej: Enlace de Google Drive, foto, etc.">
       </div>
 
       <button type="submit" class="btn-submit" id="submit-btn">Enviar Mensaje</button>
@@ -260,12 +263,10 @@
     <div id="status-message" class="status-msg"></div>
   </div>
 
-  <!-- Firebase SDK modular desde CDN -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Credenciales de Firebase actualizadas
     const firebaseConfig = {
       apiKey: "AIzaSyBx6WWDY7GXzYHiJKDXv_dnN7cAdFwdK34",
       authDomain: "buzon-cortesino.firebaseapp.com",
@@ -278,7 +279,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Lógica del Formulario
     const radioAnonimo = document.getElementById('radio-anonimo');
     const radioNombre = document.getElementById('radio-nombre');
     const nameContainer = document.getElementById('name-field-container');
@@ -303,6 +303,7 @@
       const nombre = esAnonimo ? "Anónimo" : nameInput.value.trim();
       const tipo = document.getElementById('tipo_reporte').value;
       const mensaje = document.getElementById('mensaje').value.trim();
+      const evidenciaLink = document.getElementById('evidencia_link').value.trim();
 
       if (!esAnonimo && !nombre) {
         showStatus('Por favor, ingresa tu nombre y grado/sección.', 'error');
@@ -318,6 +319,7 @@
           esAnonimo: esAnonimo,
           tipo: tipo,
           mensaje: mensaje,
+          evidenciaLink: evidenciaLink,
           fecha: serverTimestamp(),
           estado: 'Pendiente'
         });
@@ -345,3 +347,4 @@
   </script>
 </body>
 </html>
+

@@ -55,7 +55,6 @@
       margin-top: 20px;
     }
 
-    /* Pantalla de Login */
     #login-screen {
       text-align: center;
       max-width: 400px;
@@ -92,7 +91,6 @@
       background-color: var(--verde-claro);
     }
 
-    /* Panel de Control */
     #admin-panel {
       display: none;
     }
@@ -177,9 +175,16 @@
 
     .card-footer {
       margin-top: 10px;
-      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .link-evidencia {
+      color: var(--verde-claro);
       font-weight: 600;
-      color: var(--verde-institucional);
+      text-decoration: underline;
+      font-size: 0.85rem;
     }
 
     .error-msg {
@@ -193,7 +198,6 @@
 <body>
 
   <div class="container">
-    <!-- Pantalla de Login -->
     <div id="login-screen">
       <h2>Acceso Administrativo</h2>
       <input type="password" id="admin-pass" class="form-control" placeholder="Ingrese la contraseña">
@@ -201,7 +205,6 @@
       <div id="login-error" class="error-msg">Contraseña incorrecta</div>
     </div>
 
-    <!-- Panel Principal -->
     <div id="admin-panel">
       <div class="header-panel">
         <h2>Panel de Control - Municipio Escolar</h2>
@@ -218,9 +221,7 @@
         </select>
       </div>
 
-      <div id="reports-container" class="reports-list">
-        <!-- Se carga dinámicamente -->
-      </div>
+      <div id="reports-container" class="reports-list"></div>
     </div>
   </div>
 
@@ -228,7 +229,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Credenciales de Firebase actualizadas
     const firebaseConfig = {
       apiKey: "AIzaSyBx6WWDY7GXzYHiJKDXv_dnN7cAdFwdK34",
       authDomain: "buzon-cortesino.firebaseapp.com",
@@ -306,6 +306,12 @@
         if (r.fecha && r.fecha.toDate) {
           fechaStr = r.fecha.toDate().toLocaleString('es-PE');
         }
+
+        let linkHtml = "";
+        if (r.evidenciaLink) {
+          linkHtml = `<a href="${escapeHtml(r.evidenciaLink)}" target="_blank" class="link-evidencia">Ver evidencia adjunta 🔗</a>`;
+        }
+
         return `
           <div class="card-report">
             <div class="card-header">
@@ -317,6 +323,7 @@
             </div>
             <div class="card-footer">
               <span class="badge">${escapeHtml(r.tipo)}</span>
+              ${linkHtml}
             </div>
           </div>
         `;
